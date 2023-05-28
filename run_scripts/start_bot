@@ -1,0 +1,4 @@
+source venv/bin/activate
+python run_bot.py &
+echo $! > ./run_scripts/pid/tg_bot.pid
+deactivate

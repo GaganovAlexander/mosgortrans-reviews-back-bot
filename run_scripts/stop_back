@@ -1,0 +1,1 @@
+kill $(cat ./run_scripts/pid/back_app.pid)

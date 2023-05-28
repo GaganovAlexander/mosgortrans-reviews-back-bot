@@ -1,0 +1,4 @@
+source venv/bin/activate
+gunicorn run_back:app &
+echo $! > ./run_scripts/pid/back_app.pid
+deactivate
