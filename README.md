@@ -55,8 +55,8 @@ ___
 ### Непосредственная установка проекта
 Чтобы установить проект введите приведёную ниже комманду:
 ```
-git clone https://github.com/GaganovAlexander/mosgortrans &&
-cd ./mosgortrans &&
+git clone https://github.com/GaganovAlexander/mosgortrans-reviews-back-bot &&
+cd ./mosgortrans-reviews-back-bot &&
 python3.10 -m venv venv &&
 source ./venv/bin/activate &&
 pip install -r requirements.txt
@@ -100,11 +100,13 @@ sudo -u postgres psql
 CREATE USER {имя пользователя}
 WITH LOGIN PASSWORD '{пароль}';
 CREATE DATABASE {название бд};
-GRANT ALL PRIVILEGES ON DATABASE {название бд} TO {имя пользователя};
+GRANT ALL PRIVILEGES ON DATABASE
+{название бд} TO {имя пользователя};
 ```
 - имя пользователя - DB_USER
 - пароль - DB_PASSWORD
 - название бд - DB_NAME
+
 Если всё прошло хорошо, введите
 ```
 exit
@@ -139,8 +141,8 @@ ___
 ## Остановка
 Находясь в директории проекта, введите данную команду:
 ```
-source ./run_scripts/stop_back &&
-source ./run_scripts/stop_bot
+source ./run_scripts/stop_bot &&
+source ./run_scripts/stop_back
 ```
 В случае успешного завершения вам либо ничего не напишется, либо вы увидите подобные сообщения:
 ```

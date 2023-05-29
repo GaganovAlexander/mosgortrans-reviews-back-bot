@@ -1,5 +1,5 @@
 import flask
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 
 from requests import post
 
@@ -12,7 +12,6 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 
-@cross_origin
 @app.route('/api/mosgortrans/reviews', methods=['POST', 'GET'])
 def add_review():
     if flask.request.method == 'POST':
@@ -43,7 +42,10 @@ def add_review():
     else:
         return flask.jsonify(db.get_reviews())
 
-@cross_origin
 @app.get('/api/mosgortrans/innovation')
 def get_innovation():
     return flask.jsonify(db.get_innovation(flask.request.args.get('route_number')))
+
+if __name__ == '__main__':
+    db.create_tables()
+    app.run(host='127.0.0.1', port=8000, debug=False)

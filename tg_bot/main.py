@@ -1,6 +1,4 @@
-from asyncio import run as arun
-
-from tg_bot.create_bot import bot, dp
+from tg_bot import bot, dp
 from tg_bot.handlers import register_handlers, setup_commands
 
 
