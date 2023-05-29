@@ -57,6 +57,7 @@ ___
 ```
 git clone https://github.com/GaganovAlexander/mosgortrans-reviews-back-bot &&
 cd ./mosgortrans-reviews-back-bot &&
+mkdir ./run_scripts/pid &&
 python3.10 -m venv venv &&
 source ./venv/bin/activate &&
 pip install -r requirements.txt
