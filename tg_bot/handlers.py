@@ -27,7 +27,7 @@ async def setup_commands(bot: Bot):
 
 async def cancel_command(message: Message, state: FSMContext):
     await state.clear()
-    await message.reply('OK')
+    await message.reply('Действие было отменено ✅')
 
 
 async def start_command(message: Message):
@@ -35,23 +35,25 @@ async def start_command(message: Message):
     username = db.add_user(user.id, user.username)
     if not username:
         username = user.username
-    await message.answer(f"Здравствуйте!\n...\nВаш текущий ник: {username}\n...",
+    await message.answer("● Вы можете выбрать интересующую Вас опцию в меню. ↙️"+
+                         '\n● Чтобы отменить ввод отзыва или изменение никнейма, нажмите "Отмена" в меню. 🚫'+
+                         f"\n● Ваш текущий никнейм, отображаемый в рейтинге пользователей:\n{username}", 
                          reply_markup=me_inlines())
 
 
 async def me_command(message: Message):
     data = db.get_user(message.from_user.id)
     level_ = level(data['points'])
-    await message.answer(f"Ваш ник: {data['nickname']}\nВаш уровень: {level_[0]}\nВаши балы: {data['points']}/{level_[1]}",
+    await message.answer(f"Ваш никнейм: {data['nickname']}\nВаш уровень: {level_[0]}\nВаши балы: {data['points']}/{level_[1]}",
                          reply_markup=me_inlines())
 
 
 async def rating_command(message: Message):
     rating = db.get_rating(message.from_user.id)
-    rating_str = 'Топ 10 пользователей:\n'
+    rating_str = 'Топ пользователей:\n'
     for i in rating[:-1]:
-        rating_str += f"#{i['pos']} {i['nickname']}, {level(i['points'])[0]} уровень, {i['points']} {points_naming(i['points'])}\n"
-    rating_str += f"Вы:\n#{rating[-1]['pos']} {rating[-1]['nickname']}, {level(rating[-1]['points'])[0]} уровень, {rating[-1]['points']} {points_naming(rating[-1]['points'])}"
+        rating_str += f"{i['pos']}. {i['nickname']} | {level(i['points'])[0]} уровень | {i['points']} {points_naming(i['points'])}\n"
+    rating_str += f"Вы:\n{rating[-1]['pos']}. {rating[-1]['nickname']} | {level(rating[-1]['points'])[0]} уровень | {rating[-1]['points']} {points_naming(rating[-1]['points'])}"
     await message.answer(rating_str)
 
 
@@ -59,19 +61,19 @@ async def inlines_handler(call: CallbackQuery, state: FSMContext):
     data = call.data.split('_')
     match data[0]:
         case 'changeNick':
-            await call.message.answer('Введите новый ник')
+            await call.message.answer('Введите новый никнейм')
             await state.set_state(FSM.changeNick)
             await call.answer()
 
 
 async def change_nick(message: Message, state: FSMContext):
     db.change_nickname(message.from_user.id, message.text)
-    await message.answer(f"Готово, новый ник:\n{message.text}")
+    await message.answer(f"отово. Ваш новый никнейм::\n{message.text}")
     await state.clear()
 
 
 async def review_command(message: Message):
-    await message.answer("Оставьте отзыв, нажмите на кнопку ниже", reply_markup=review_inline_keyboard())
+    await message.answer("Чтобы заполнить отзыв, нажмите кнопку ниже 👇", reply_markup=review_inline_keyboard())
 
 
 def register_handlers(dp: Dispatcher):

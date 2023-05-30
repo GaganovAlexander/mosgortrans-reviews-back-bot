@@ -42,13 +42,14 @@ def add_review():
 
     # If previous checks are successful, adding reviews
     return_ = 'User already did review last 10m'
-    text = 'Вы уже оставляли отзыв за последние 10 минут'
+    text = 'Отзыв можно оставлять не чаще раза в 10 минут.'
     if db.add_review(review.get('telegram_id'), review.get('route_number'), review.get('rating'), review.get('clearness'),
                         review.get('smoothness'), review.get('conductors_work'), review.get('occupancy'),
                         review.get('innovation_id'), review.get('innovation'), review.get('text_review')):
         # If review was successfully added and user haven't send review recently, add points to they
         db.add_points(review.get('telegram_id'), 100)
-        text = 'Отзыв записан\n100 очков начислено'
+        text = "Большое спасибо за отзыв!  🎉\nВам начислено 100 баллов. 👏\nДля просмотра баллов выберите опцию «Мой профиль»."+\
+               "\nДля просмотра рейтинга, выберите опцию «Топ пользователей»."
         return_ = 'OK'
 
     post(f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
