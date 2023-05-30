@@ -20,7 +20,7 @@ async def setup_commands(bot: Bot):
         BotCommand(command='review', description='Оставить отзыв'),
         BotCommand(command='cancel', description='Отмена'),
         BotCommand(command='me', description='Мой профиль'),
-        BotCommand(command='rating', description='Топ 10 пользователей')
+        BotCommand(command='rating', description='Топ пользователей')
     ]
     await bot.set_my_commands(bot_commands)
 
