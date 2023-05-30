@@ -188,20 +188,22 @@ ___
   - **route_number** 
   - **rating**
 - Длина **route_number** <= 15
-- Если необязательные поля были незаполнены пользователем, то можно как отправить их со значением *null*, так и не отправлять вовсе
+- Если необязательные поля были незаполнены пользователем, то можно как отправить их со значением *null*, так и не отправлять вовсе.
 ___
 ### В случае успеха, в ответ вы получите 
 Response("OK", 200)
 ### или
-Response("User already did review last 10m", 200), если пользователь уже оставлял отзыв за последнии 10м.
+Response("User already did review last 10m", 200)
+
+Если пользователь уже оставлял отзыв за последние 10м.
 ### Ошибки запроса:
 - Отсутствие одного или нескольких обязательных полей
   - Response("There not enough required fields", 400)
-- Присутствие поля innovation(оценнка инновации), при отсутсвии поля его айди(innovation_id)
-  - Response("Innovation id is required if you send an innovation", 400)
+- Присутствие поля innovation(оценка инновации), при отсутсвии поля его айди(innovation_id)
+  - Response("innovation_id is required if you send an innovation", 400)
 - Несоответствие выбранного маршрута и айди инновации
   - Respone("Innovation id does not match route number", 400)
-- Несовподение типов полей описанных в документации и отправленых в запросе
+- Несовподение типов полей описанных в документации и отправленных в запросе
   - Response("Fields types error, read documentation", 400) 
 ___
 ### Для проверки
