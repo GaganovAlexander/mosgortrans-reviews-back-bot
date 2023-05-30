@@ -53,7 +53,7 @@ async def rating_command(message: Message):
     rating_str = 'Топ пользователей:\n'
     for i in rating[:-1]:
         rating_str += f"{i['pos']}. {i['nickname']} | {level(i['points'])[0]} уровень | {i['points']} {points_naming(i['points'])}\n"
-    rating_str += f"Вы:\n{rating[-1]['pos']}. {rating[-1]['nickname']} | {level(rating[-1]['points'])[0]} уровень | {rating[-1]['points']} {points_naming(rating[-1]['points'])}"
+    rating_str += f"\nВы:\n{rating[-1]['pos']}. {rating[-1]['nickname']} | {level(rating[-1]['points'])[0]} уровень | {rating[-1]['points']} {points_naming(rating[-1]['points'])}"
     await message.answer(rating_str)
 
 
