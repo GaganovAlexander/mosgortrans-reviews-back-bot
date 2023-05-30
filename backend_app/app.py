@@ -29,9 +29,9 @@ def add_review():
         return "Innovation id does not match route number", 400
     
     # Checking validity of types
-    if not(isinstance(review.get('telegram_id', int)) or
-            isinstance(review.get('route_number', str)) or
-            isinstance(review.get('rating', int)) or
+    if not(isinstance(review.get('telegram_id'), int) or
+            isinstance(review.get('route_number'), str) or
+            isinstance(review.get('rating'), int) or
             (isinstance(review.get('clearness'), bool) or review.get('clearness') is None) or
             (isinstance(review.get('smoothness'), bool) or review.get('smoothness') is None) or
             (isinstance(review.get('conductors_work'), bool) or review.get('conductors_work') is None) or

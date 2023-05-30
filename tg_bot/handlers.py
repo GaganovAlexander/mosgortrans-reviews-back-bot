@@ -44,7 +44,7 @@ async def start_command(message: Message):
 async def me_command(message: Message):
     data = db.get_user(message.from_user.id)
     level_ = level(data['points'])
-    await message.answer(f"Ваш никнейм: {data['nickname']}\nВаш уровень: {level_[0]}\nВаши балы: {data['points']}/{level_[1]}",
+    await message.answer(f"Ваш никнейм: {data['nickname']}\nВаш уровень: {level_[0]}\nВаши баллы: {data['points']}/{level_[1]}",
                          reply_markup=me_inlines())
 
 
