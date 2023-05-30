@@ -202,7 +202,7 @@ ___
 
 Если всё хорошо, то ваш бот напишет вам.
 ___
-## Как получить innovation_id и innovation
+## Как получить innovation_id и текст инновации
 ### Отправьте запрос:
 GET http(s)://{ваш.домен}/api/mosgortrans/innovation?route_number={*string*}
 ### Требования к полям:
@@ -212,8 +212,8 @@ GET http(s)://{ваш.домен}/api/mosgortrans/innovation?route_number={*stri
 Response({**id**: *number*, **name**: *string*}, 200)
 
 Где
-- **id** - это innovation_id
-- **name** - это  innovation
+- **id** - это **innovation_id**
+- **name** - это текст инновации
 
 Если для выбранного маршрута никогда не вводились инновации, ответ будет:
 
