@@ -1,6 +1,6 @@
-import psycopg2.extras
-
 from datetime import datetime, timedelta
+
+import psycopg2.extras
 
 from configs import DB_USER, DB_PASSWORD, DB_NAME
 
@@ -16,6 +16,11 @@ def create_tables():
         id BIGSERIAL PRIMARY KEY,
         route_number VARCHAR(15),
         name VARCHAR(255)
+    );
+    CREATE TABLE IF NOT EXISTS users(
+        telegram_id BIGINT PRIMARY KEY,
+        nickname text,
+        points BIGINT
     );
     CREATE TABLE IF NOT EXISTS
     reviews (
@@ -34,15 +39,10 @@ def create_tables():
             PRIMARY KEY(telegram_id, created_at),
         CONSTRAINT fk_users
             FOREIGN KEY (telegram_id)
-            REFERENCES users(id),
+            REFERENCES users(telegram_id),
         CONSTRAINT fk_innovations
             FOREIGN KEY(innovation_id) 
             REFERENCES innovations(id)
-    );
-    CREATE TABLE IF NOT EXISTS users(
-        telegram_id BIGINT PRIMARY KEY,
-        nickname text,
-        points BIGINT
     );
     ''')
     conn.commit()

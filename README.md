@@ -174,8 +174,8 @@ ___
     "conductors_work": boolean,
     "occupancy": boolean,
 
-    // Айди инновации и его текст для полей innovation_id и innovation, 
-    // соответственно, можно получить по инструкции ниже
+    // Айди инновации для поля innovation_id и его текст для отображения пользователю
+    // можно получить по инструкции ниже
     "innovation_id": number,
     "innovation": boolean,
     "text_review": string
