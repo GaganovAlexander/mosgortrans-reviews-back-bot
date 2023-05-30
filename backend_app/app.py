@@ -9,7 +9,6 @@ from configs import BOT_TOKEN
 
 app = flask.Flask(__name__)
 cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 @app.route('/api/mosgortrans/reviews', methods=['POST', 'GET'])
