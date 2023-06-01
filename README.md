@@ -198,7 +198,6 @@ Response("OK", {status: 200})
 ```js
 Response("User already did review last 10m", {status: 200})
 ```
-
 Если пользователь уже оставлял отзыв за последние 10м.
 ### Ошибки запроса:
 - Отсутствие одного или нескольких обязательных полей
@@ -228,9 +227,8 @@ ___
 GET http(s)://{ваш.домен}/api/mosgortrans/innovation?route_number=*string*
 
 вместо *string* вставьте номер иаршрута, последнюю инновация которого вы хотите получить
-### Требования к полям:
+### Требования к аргументам:
 - длина **route_number** <= 15
-
 ### В ответ вы получите:
 ```js
 Response({id: number, name: string}, {status: 200})
@@ -240,5 +238,6 @@ Response({id: number, name: string}, {status: 200})
 - **name** - это текст инновации
 
 Если для выбранного маршрута никогда не вводились инновации, ответ будет:
-
-Response(*null*, 200)
+```js
+Response(null, {status: 200})
+```
