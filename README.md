@@ -4,7 +4,7 @@ ___
 Здесь и далее команды будут только для Linux, операционной системы, преимущественно используемую на серверах.
 ___
 ### Проверка наличия нужного програмного обеспечения
-Перед установкой убедитесь в наличии **python** версии **3.10** и модуля **venv** у него на устройстве. Это можно сделать введя эту команду:
+Перед установкой убедитесь в наличии **python** версии **3.10** и его модуля **venv** на устройстве. Это можно сделать введя эту команду:
 ```
 python3.10 --version &&
 python3.10 -m venv --help
@@ -75,7 +75,7 @@ location /api/mosgortrans {
 ___
 ### Создание .env файла
 В кореной папке проекта создайте файл **.env** со следующим содержанием:
-```
+```bash
 BOT_TOKEN=XXX
 DB_USER=XXX
 DB_PASSWORD=XXX
@@ -160,25 +160,25 @@ ___
 **POST** http(s)://{ваш.домен}/api/mosgortrans/reviews 
 
 **BODY**(JSON): 
-```
+```js
 {
-    "telegram_id": number,
-    "route_number": string,
+    telegram_id: number,
+    route_number: string,
 
     // 1-5 "звёзд"
-    "rating": number, 
+    rating: number, 
 
     // здесь и далее, true = лайк, false = дизлайк, null = не было отмечено
-    "clearness": boolean, 
-    "smoothness": boolean,
-    "conductors_work": boolean,
-    "occupancy": boolean,
+    clearness: boolean, 
+    smoothness: boolean,
+    conductors_work: boolean,
+    occupancy: boolean,
 
     // Айди инновации для поля innovation_id и его текст для отображения пользователю
     // можно получить по инструкции ниже
-    "innovation_id": number,
-    "innovation": boolean,
-    "text_review": string
+    innovation_id: number,
+    innovation: boolean,
+    text_review: string
 }
 ```
 ___
@@ -198,13 +198,21 @@ Response("User already did review last 10m", 200)
 Если пользователь уже оставлял отзыв за последние 10м.
 ### Ошибки запроса:
 - Отсутствие одного или нескольких обязательных полей
-  - Response("There not enough required fields", 400)
+```js
+Response("There not enough required fields", {status: 400})
+```
 - Присутствие поля innovation(оценка инновации), при отсутсвии поля его айди(innovation_id)
-  - Response("innovation_id is required if you send an innovation", 400)
+```js
+Response("innovation_id is required if you send an innovation", {status: 400})
+```
 - Несоответствие выбранного маршрута и айди инновации
-  - Respone("Innovation id does not match route number", 400)
+```js
+Respone("Innovation id does not match route number", {status: 400})
+```
 - Несовподение типов полей описанных в документации и отправленных в запросе
-  - Response("Fields types error, read documentation", 400) 
+```js
+Response("Fields types error, read documentation", {status: 400})
+```
 ___
 ### Для проверки
 Можно отправить запрос со своим айди телеграма(его можно узнать [тут](https://t.me/getmyid_bot)), не забудьте соблюсти требования по полям.
@@ -213,13 +221,16 @@ ___
 ___
 ## Как получить innovation_id и текст инновации
 ### Отправьте запрос:
-GET http(s)://{ваш.домен}/api/mosgortrans/innovation?route_number={*string*}
+GET http(s)://{ваш.домен}/api/mosgortrans/innovation?route_number=*string*
+
+вместо *string* вставьте номер иаршрута, последнюю инновация которого вы хотите получить
 ### Требования к полям:
 - длина **route_number** <= 15
 
 ### В ответ вы получите:
-Response({**id**: *number*, **name**: *string*}, 200)
-
+```js
+Response({id: number, name: string}, {status: 200})
+```
 Где
 - **id** - это **innovation_id**
 - **name** - это текст инновации
