@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 import psycopg2.extras
+from psycopg2.errors import DatatypeMismatch
 
 from configs import DB_USER, DB_PASSWORD, DB_NAME
 
@@ -57,18 +58,22 @@ def get_innovation(route_num: str):
 
 def add_review(telegram_id: int, route_num: str, rating: int, clearness: bool, smothness: bool,
                conductors_work: bool, occupancy: bool, innovation_id: int, innovation: bool, text_review: str) -> bool:
-    cur.execute(
-        'SELECT MAX(created_at) ca FROM reviews WHERE telegram_id = %s', (telegram_id,))
-    last_review_time = cur.fetchone()['ca']
-    if last_review_time is None or datetime.now() - last_review_time >= timedelta(minutes=10):
+    try:
         cur.execute(
-            'INSERT INTO reviews VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
-            (telegram_id, route_num, rating, clearness, smothness, conductors_work,
-             occupancy, innovation_id, innovation, text_review, datetime.now())
-        )
-        conn.commit()
-        return True
-    return False
+            'SELECT MAX(created_at) ca FROM reviews WHERE telegram_id = %s', (telegram_id,))
+        last_review_time = cur.fetchone()['ca']
+        if last_review_time is None or datetime.now() - last_review_time >= timedelta(minutes=10):
+            cur.execute(
+                'INSERT INTO reviews VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
+                (telegram_id, route_num, rating, clearness, smothness, conductors_work,
+                occupancy, innovation_id, innovation, text_review, datetime.now())
+            )
+            conn.commit()
+            return 0
+    except DatatypeMismatch:
+        conn.rollback()
+        return -1
+    return 1
 
 
 def get_reviews(telegram_id: None | int = None):
