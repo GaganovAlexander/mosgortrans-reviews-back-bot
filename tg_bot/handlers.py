@@ -4,7 +4,6 @@ from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 
-
 from tg_bot.keys import review_inline_keyboard, me_inlines
 from tg_bot.utils import level, points_naming
 import db

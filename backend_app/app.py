@@ -1,5 +1,4 @@
 from requests import post
-
 import flask
 from flask_cors import CORS
 
@@ -29,18 +28,19 @@ def add_review():
         return "Innovation id does not match route number", 400
 
     # If previous checks are successful, adding reviews
-    return_ = 'User already did review last 10m'
-    text = 'Отзыв можно оставлять не чаще раза в 10 минут.'
     insert_res = db.add_review(review.get('telegram_id'), review.get('route_number'), review.get('rating'), review.get('clearness'),
                                review.get('smoothness'), review.get('conductors_work'), review.get('occupancy'),
                                review.get('innovation_id'), review.get('innovation'), review.get('text_review'))
-    if not insert_res:
+    if insert_res == 0:
         # If review was successfully added and user haven't send review recently, add points to they
         db.add_points(review.get('telegram_id'), 100)
         text = "<u>Большое спасибо за отзыв!</u> 🎉\n\nВам начислено 100 баллов. 👏\n\nДля просмотра баллов выберите опцию «Мой профиль»."+\
             "\nДля просмотра рейтинга, выберите опцию «Топ пользователей»."
         return_ = 'OK'
-    elif insert_res == -1:
+    elif insert_res == 1:
+        return_ = 'User already did review last 10m'
+        text = 'Отзыв можно оставлять не чаще раза в 10 минут.'
+    else:
         return "Fields types error, read documentation", 400
     
     post(f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
