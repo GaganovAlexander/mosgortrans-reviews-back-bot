@@ -13,7 +13,7 @@ def review_inline_keyboard() -> InlineKeyboardMarkup:
 
 def me_inlines() -> InlineKeyboardMarkup:
     inline = InlineKeyboardBuilder()
-    inline.button(text='Изменить ник',
+    inline.button(text='Изменить никнейм',
                   callback_data=f"changeNick")
     inline.adjust()
     return inline.as_markup()

@@ -12,6 +12,8 @@ cors = CORS(app)
 
 @app.post('/api/mosgortrans/reviews')
 def add_review():
+    '''Add review to the database from request parameters'''
+
     review = flask.request.json
 
     # Verify that all required fields are present
@@ -23,17 +25,17 @@ def add_review():
         return "Innovation id is required if you send an innovation", 400
     
     # Cheking matching of innovation for presented route
-    innovation = db.get_innovation(review.get('route_number'))
+    innovation = db.innovations.get(review.get('route_number'))
     if review.get('innovation_id') is not None and (innovation is None or review.get('innovation_id') != innovation.get('id')):
         return "Innovation id does not match route number", 400
 
     # If previous checks are successful, adding reviews
-    insert_res = db.add_review(review.get('telegram_id'), review.get('route_number'), review.get('rating'), review.get('clearness'),
+    insert_res = db.reviews.add(review.get('telegram_id'), review.get('route_number'), review.get('rating'), review.get('clearness'),
                                review.get('smoothness'), review.get('conductors_work'), review.get('occupancy'),
                                review.get('innovation_id'), review.get('innovation'), review.get('text_review'))
     if insert_res == 0:
         # If review was successfully added and user haven't send review recently, add points to they
-        db.add_points(review.get('telegram_id'), 100)
+        db.users.add_points(review.get('telegram_id'), 100)
         text = "<u>Большое спасибо за отзыв!</u> 🎉\n\nВам начислено 100 баллов. 👏\n\nДля просмотра баллов выберите опцию «Мой профиль»."+\
             "\nДля просмотра рейтинга, выберите опцию «Топ пользователей»."
         return_ = 'OK'
@@ -49,4 +51,5 @@ def add_review():
 
 @app.get('/api/mosgortrans/innovation')
 def get_innovation():
-    return flask.jsonify(db.get_innovation(flask.request.args.get('route_number')))
+    '''Get last innovation for the chosen route'''    
+    return flask.jsonify(db.innovations.get(flask.request.args.get('route_number')))

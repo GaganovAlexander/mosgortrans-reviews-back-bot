@@ -31,7 +31,7 @@ async def cancel_command(message: Message, state: FSMContext):
 
 async def start_command(message: Message):
     user = message.from_user
-    username = db.add_user(user.id, user.username)
+    username = db.users.create(user.id, user.username)
     if not username:
         username = user.username
     await message.answer("● Вы можете выбрать интересующую Вас опцию в меню. ↙️"+
@@ -41,18 +41,19 @@ async def start_command(message: Message):
 
 
 async def me_command(message: Message):
-    data = db.get_user(message.from_user.id)
+    data = db.users.get(message.from_user.id)
     level_ = level(data['points'])
     await message.answer(f"Ваш никнейм: {data['nickname']}\nВаш уровень: {level_[0]}\nВаши баллы: {data['points']}/{level_[1]}",
                          reply_markup=me_inlines())
 
 
 async def rating_command(message: Message):
-    rating = db.get_rating(message.from_user.id)
+    rating = db.users.get_rating(message.from_user.id)
     rating_str = 'Топ пользователей:\n'
     for i in rating[:-1]:
         rating_str += f"{i['pos']}. {i['nickname']} | {level(i['points'])[0]} уровень | {i['points']} {points_naming(i['points'])}\n"
-    rating_str += f"\nВы:\n{rating[-1]['pos']}. {rating[-1]['nickname']} | {level(rating[-1]['points'])[0]} уровень | {rating[-1]['points']} {points_naming(rating[-1]['points'])}"
+    rating_str += f"\nВы:\n{rating[-1]['pos']}. {rating[-1]['nickname']} | {level(rating[-1]['points'])[0]} уровень |" +\
+                  f"{rating[-1]['points']} {points_naming(rating[-1]['points'])}"
     await message.answer(rating_str)
 
 
@@ -66,8 +67,8 @@ async def inlines_handler(call: CallbackQuery, state: FSMContext):
 
 
 async def change_nick(message: Message, state: FSMContext):
-    db.change_nickname(message.from_user.id, message.text)
-    await message.answer(f"Готово. Ваш новый никнейм::\n{message.text}")
+    db.users.change_nickname(message.from_user.id, message.text)
+    await message.answer(f"Готово. Ваш новый никнейм:\n{message.text}")
     await state.clear()
 
 
