@@ -61,19 +61,20 @@ def add_review(telegram_id: int, route_num: str, rating: int, clearness: bool, s
     cur.execute(
         'SELECT MAX(created_at) ca FROM reviews WHERE telegram_id = %s', (telegram_id,))
     last_review_time = cur.fetchone()['ca']
-    if last_review_time is None or datetime.now() - last_review_time >= timedelta(minutes=10):
-        try:
-            cur.execute(
-                'INSERT INTO reviews VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
-                (telegram_id, route_num, rating, clearness, smothness, conductors_work,
-                occupancy, innovation_id, innovation, text_review, datetime.now())
-            )
-            conn.commit()
-            return 0
-        except DatatypeMismatch:
-            conn.rollback()
-            return -1
-    return 1
+    if last_review_time is not None and datetime.now() - last_review_time <= timedelta(minutes=10):
+        return 1
+    try:
+        cur.execute(
+            'INSERT INTO reviews VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
+            (telegram_id, route_num, rating, clearness, smothness, conductors_work,
+            occupancy, innovation_id, innovation, text_review, datetime.now())
+        )
+        conn.commit()
+        return 0
+    except DatatypeMismatch:
+        conn.rollback()
+        return -1
+    
 
 
 def get_reviews(telegram_id: None | int = None):

@@ -67,7 +67,7 @@ async def inlines_handler(call: CallbackQuery, state: FSMContext):
 
 async def change_nick(message: Message, state: FSMContext):
     db.change_nickname(message.from_user.id, message.text)
-    await message.answer(f"отово. Ваш новый никнейм::\n{message.text}")
+    await message.answer(f"Готово. Ваш новый никнейм::\n{message.text}")
     await state.clear()
 
 
