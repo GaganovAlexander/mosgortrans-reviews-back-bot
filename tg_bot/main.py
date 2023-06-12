@@ -9,7 +9,7 @@ from configs import STANDART_URL
 
 
 async def on_startup():
-    await bot.set_webhook(f'{STANDART_URL}bot/mosgortrans', drop_pending_updates=True)
+    await bot.set_webhook(f'{STANDART_URL}/bot/mosgortrans', drop_pending_updates=True)
     await setup_commands(bot)
     print('Бот запущен')
 

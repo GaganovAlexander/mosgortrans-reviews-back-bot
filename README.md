@@ -72,6 +72,14 @@ location /api/mosgortrans {
 
 }
 ```
+И для вебхуков бота:
+```nginx
+location /bot/mosgortrans {
+
+    proxy_pass http://127.0.0.1:8002;
+
+}
+```
 ___
 ### Создание .env файла
 В кореной папке проекта создайте файл **.env** со следующим содержанием:
@@ -80,9 +88,11 @@ BOT_TOKEN=XXX
 DB_USER=XXX
 DB_PASSWORD=XXX
 DB_NAME=XXX
+STANDART_URL=XXX
 ```
 Вместо ХХХ здесь должны быть ваши данные.
-
+### STANDART_URL
+\- это ваш домен или просто ip-адрес в формате "http(s)://example.com"
 ### Для получения BOT_TOKEN
 Напишите официальному ["отцу"](https://t.me/BotFather) всех ботов телеграма и следуйте его инструкциям
 ___
@@ -157,7 +167,7 @@ source ./run_scripts/stop_back
 ___
 ## Использование апи
 ### При заполнении формы на вашем фронтенде, нужно отослать запрос:
-**POST** http(s)://{ваш.домен}/api/mosgortrans/reviews 
+**POST** http(s)://{ваш домен или ip-адрес}/api/mosgortrans/reviews 
 
 **BODY**(JSON): 
 ```js
